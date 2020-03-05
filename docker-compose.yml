@@ -1,0 +1,32 @@
+version: '3'
+services:
+  redis:
+    container_name: bonza-redis
+    restart: always
+    privileged: true
+    image: bonzaphp/redis:5.0
+    ports:
+      - '6399:6379'
+    volumes:
+      - redis-conf:/usr/local/etc/redis
+      - redis:/data
+    environment:
+      TZ: 'Asia/Shanghai'
+    networks:
+      - docker-redis
+networks:
+  docker-redis:
+    driver: bridge
+volumes:
+  redis:
+    driver: local
+    driver_opts:
+      type: bind
+      o: bind
+      device: ${PWD}/data
+  redis-conf:
+    driver: local
+    driver_opts:
+      type: bind
+      o: bind
+      device: ${PWD}/conf
